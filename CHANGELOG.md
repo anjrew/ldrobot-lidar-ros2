@@ -9,6 +9,7 @@ CHANGELOG
 
 2025-02-01
 ----------
+
 - Add Jazzy support
 
 2024-11-25
