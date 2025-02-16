@@ -20,9 +20,9 @@ LDRobot then created also an [Indiegogo campaign](https://www.indiegogo.com/proj
 
 LDRobot today distributes the Lidar through third-party resellers:
 
-* Waveshare: [LD19](https://www.waveshare.com/wiki/DTOF_LIDAR_LD19)
-* Innomaker: [LD06](https://www.inno-maker.com/product/lidar-ld06/)
-* Other: [Search on Google](https://www.google.com/search?q=ld19+lidar&newwindow=1&sxsrf=ALiCzsb2xd4qTTA78N00mP9-PP5HY4axZw:1669710673586&source=lnms&tbm=shop&sa=X&ved=2ahUKEwjYns78_NL7AhVLVfEDHf2PDk8Q_AUoA3oECAIQBQ&cshid=1669710734415350&biw=1862&bih=882&dpr=1)
+- Waveshare: [LD19](https://www.waveshare.com/wiki/DTOF_LIDAR_LD19)
+- Innomaker: [LD06](https://www.inno-maker.com/product/lidar-ld06/)
+- Other: [Search on Google](https://www.google.com/search?q=ld19+lidar&newwindow=1&sxsrf=ALiCzsb2xd4qTTA78N00mP9-PP5HY4axZw:1669710673586&source=lnms&tbm=shop&sa=X&ved=2ahUKEwjYns78_NL7AhVLVfEDHf2PDk8Q_AUoA3oECAIQBQ&cshid=1669710734415350&biw=1862&bih=882&dpr=1)
 
 ## The node in action
 
@@ -34,8 +34,8 @@ LD19 Lifecycle            |  LD19 outdoor
 
 The node is designed to work with
 
-* [ROS 2 Humble](https://docs.ros.org/en/humble/index.html)
-* [ROS 2 Jazzy](https://docs.ros.org/en/jazzy/index.html)
+- [ROS 2 Humble](https://docs.ros.org/en/humble/index.html)
+- [ROS 2 Jazzy](https://docs.ros.org/en/jazzy/index.html)
 
 > :pushpin: **Note**: [ROS 2 Rolling](https://docs.ros.org/en/rolling/index.html) is not yet supported because of the missing `nav2_utils` dependency
 
@@ -95,12 +95,12 @@ If the node is correctly configured and the connection is established, `Transiti
 The node is now in the `INACTIVE` state, enter the following command to activate:
 
     ros2 lifecycle set /lidar_node activate
-    
+
 The node is now activated and the `/ldlidar_node/scan` topic of type `sensor_msgs/msg/LaserScan` is available to be subscribed.
 
 #### Launch file with YAML parameters and Lifecycle manager
 
-Thanks to the [NAV2](https://navigation.ros.org/index.html) project, you can launch a [`lifecycle_manager`](https://navigation.ros.org/configuration/packages/configuring-lifecycle.html) node that handles the state transitions described above.
+Thanks to the [Nav2](https://navigation.ros.org/index.html) project, you can launch a [`lifecycle_manager`](https://navigation.ros.org/configuration/packages/configuring-lifecycle.html) node that handles the state transitions described above.
 An example launch file, [`ldlidar_with_mgr.launch.py`](ldlidar_node/launch/ldlidar_with_mgr.launch.py), demonstrates how to start the `ldlidar_node` with parameters loaded from the 
 `ldlidar.yaml` file. It also starts the `lifecycle_manager`, configured with the [`lifecycle_mgr.yaml`](ldlidar_node/config/lifecycle_mgr.yaml) file, to automatically manage the 
 lifecycle transitions:
@@ -113,20 +113,20 @@ The `ldlidar_with_mgr.launch.py` script automatically starts the `ldlidar_node` 
 
 Following the list of node parameters:
 
-* **`general.debug_mode`**: set to `true` to activate debug messages
-* **`comm.serial_port`**: the serial port path
-* **`comm.baudrate`**: the serial port baudrate
-* **`comm.timeout_msec`**: the serial communication timeout in milliseconds
-* **`lidar.model`**: Lidar model [LDLiDAR_LD06, LDLiDAR_LD19, LDLiDAR_STL27L]
-* **`lidar.rot_verse`**: The rotation verse. Use clockwise if the lidar is mounted upsidedown. [CW, CCW]
-* **`lidar.units`**: distance measurement units [M, CM, MM]
-* **`lidar.frame_id`**: TF frame name for the lidar
-* **`lidar.bins`**: set to 0 for dinamic scan size according to rotation speed, set to a fixed value [e.g. 455] for compatibility with SLAM Toolbox
-* **`lidar.range_min`**: minimum scan distance
-* **`lidar.range_max`**: maximum scan distance
-* **`lidar.enable_angle_crop`**: enable angle cropping
-* **`lidar.angle_crop_min`**: minimum cropping angle
-* **`lidar.angle_crop_max`**: maximum cropping angle
+- **`general.debug_mode`**: set to `true` to activate debug messages
+- **`comm.serial_port`**: the serial port path
+- **`comm.baudrate`**: the serial port baudrate
+- **`comm.timeout_msec`**: the serial communication timeout in milliseconds
+- **`lidar.model`**: Lidar model [LDLiDAR_LD06, LDLiDAR_LD19, LDLiDAR_STL27L]
+- **`lidar.rot_verse`**: The rotation verse. Use clockwise if the lidar is mounted upsidedown. [CW, CCW]
+- **`lidar.units`**: distance measurement units [M, CM, MM]
+- **`lidar.frame_id`**: TF frame name for the lidar
+- **`lidar.bins`**: set to 0 for dinamic scan size according to rotation speed, set to a fixed value [e.g. 455] for compatibility with SLAM Toolbox
+- **`lidar.range_min`**: minimum scan distance
+- **`lidar.range_max`**: maximum scan distance
+- **`lidar.enable_angle_crop`**: enable angle cropping
+- **`lidar.angle_crop_min`**: minimum cropping angle
+- **`lidar.angle_crop_max`**: maximum cropping angle
 
 ## Display scan on RViz2
 
@@ -209,4 +209,3 @@ the final result should be similar to
     | [metadata] Idle System CPU Util. (%) : 0.333                                               |
     | [metadata] Benchmark Mode : 3                                                              |
     +--------------------------------------------------------------------------------------------+
-
