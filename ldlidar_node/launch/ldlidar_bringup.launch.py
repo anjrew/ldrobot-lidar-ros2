@@ -24,32 +24,24 @@ from launch.actions import (
     OpaqueFunction,
     SetEnvironmentVariable,
 )
-from launch.substitutions import (
-    LaunchConfiguration,
-    TextSubstitution
-)
+from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import (
-    Node,
     ComposableNodeContainer,
-    LoadComposableNodes
+    LoadComposableNodes,
 )
 from launch_ros.descriptions import ComposableNode
 
-def launch_setup(context, *args, **kwargs):
+
+def launch_setup(context):
     return_array = []
 
-    # Define LaunchDescription variable
-    ld = LaunchDescription()
-
-    node_ns = LaunchConfiguration('node_namespace')
-    node_name = LaunchConfiguration('node_name')
-    container_name = LaunchConfiguration('container_name')
+    node_ns = LaunchConfiguration("node_namespace")
+    node_name = LaunchConfiguration("node_name")
+    container_name = LaunchConfiguration("container_name")
 
     # Lidar node configuration file
     lidar_config_path = os.path.join(
-        get_package_share_directory('ldlidar_node'),
-        'params',
-        'ldlidar.yaml'
+        get_package_share_directory("ldlidar_node"), "params", "ldlidar.yaml"
     )
 
     # Handle Parameter values
@@ -57,79 +49,75 @@ def launch_setup(context, *args, **kwargs):
     node_name_val = node_name.perform(context)
     container_name_val = container_name.perform(context)
 
-    if node_namespace_val != '':
-        node_namespace_val = '/' + node_namespace_val
+    if node_namespace_val != "":
+        node_namespace_val = "/" + node_namespace_val
 
     # LDLidar component if required
-    if container_name_val=='':
-        container_name_val = 'ldlidar_container'
+    if container_name_val == "":
+        container_name_val = "ldlidar_container"
         # ROS 2 Component Container
-        distro = os.environ['ROS_DISTRO']
-        if distro == 'foxy':
+        distro = os.environ["ROS_DISTRO"]
+        if distro == "foxy":
             # Foxy does not support the isolated mode
-            container_exec='component_container'
+            container_exec = "component_container"
         else:
-            container_exec='component_container_isolated'
-        
+            container_exec = "component_container_isolated"
+
         ldlidar_container = ComposableNodeContainer(
-                name=container_name_val,
-                namespace=node_ns,
-                package='rclcpp_components',
-                executable=container_exec,
-                composable_node_descriptions=[
-                ],
-                output='screen',
+            name=container_name_val,
+            namespace=node_ns,
+            package="rclcpp_components",
+            executable=container_exec,
+            composable_node_descriptions=[],
+            output="screen",
         )
         return_array.append(ldlidar_container)
-    
+
     # LDLidar component
     ldlidar_component = ComposableNode(
-            package='ldlidar_component',
-            namespace=node_ns,
-            plugin='ldlidar::LdLidarComponent',
-            name=node_name,
-            parameters=[
-                # YAML files
-                lidar_config_path  # Parameters
-            ],
-            remappings=[('/ldlidar_node/scan', '/scan')],
-            extra_arguments=[{'use_intra_process_comms': True}]
-        )
-    
+        package="ldlidar_component",
+        namespace=node_ns,
+        plugin="ldlidar::LdLidarComponent",
+        name=node_name,
+        parameters=[
+            # YAML files
+            lidar_config_path  # Parameters
+        ],
+        remappings=[("/ldlidar_node/scan", "/scan")],
+        extra_arguments=[{"use_intra_process_comms": True}],
+    )
+
     # LDLidar Lifecycle node in container
-    full_container_name = node_namespace_val + '/' + container_name_val
-    info = '* Loading node: ' + node_name_val + ' in container: ' + full_container_name
+    full_container_name = node_namespace_val + "/" + container_name_val
+    info = "* Loading node: " + node_name_val + " in container: " + full_container_name
     return_array.append(LogInfo(msg=TextSubstitution(text=info)))
-    
+
     load_composable_node = LoadComposableNodes(
         target_container=full_container_name,
-        composable_node_descriptions=[ldlidar_component]
+        composable_node_descriptions=[ldlidar_component],
     )
     return_array.append(load_composable_node)
 
     return return_array
 
 
-
 def generate_launch_description():
     return LaunchDescription(
         [
-            SetEnvironmentVariable(name='RCUTILS_COLORIZED_OUTPUT', value='1'),
+            SetEnvironmentVariable(name="RCUTILS_COLORIZED_OUTPUT", value="1"),
             DeclareLaunchArgument(
-            'node_namespace',
-            default_value='',
-            description='Namespace of the node'
+                "node_namespace", default_value="", description="Namespace of the node"
             ),
             DeclareLaunchArgument(
-                'node_name',
-                default_value='ldlidar_node',
-                description='Name of the node'
+                "node_name",
+                default_value="ldlidar_node",
+                description="Name of the node",
             ),
             DeclareLaunchArgument(
-                'container_name',
-                default_value='',
-                description='Name of an exister container to load the Lidar component. If empty a new container will be created.'
+                "container_name",
+                default_value="",
+                description="Name of an exister container to load the Lidar component. If empty a new container will be created.",
             ),
-            OpaqueFunction(function=launch_setup)
+            OpaqueFunction(function=launch_setup),
         ]
     )
