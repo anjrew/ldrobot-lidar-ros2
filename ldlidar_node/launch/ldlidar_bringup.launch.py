@@ -25,7 +25,7 @@ from launch.actions import (
     SetEnvironmentVariable,
 )
 from launch.substitutions import LaunchConfiguration, TextSubstitution
-from launch_ros.actions import Node, ComposableNodeContainer, LoadComposableNodes
+from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes
 from launch_ros.descriptions import ComposableNode
 
 
@@ -76,13 +76,14 @@ def launch_setup(context, *args, **kwargs):
     # LDLidar component
     ldlidar_component = ComposableNode(
         package="ldlidar_component",
-        namespace=node_ns,
+        # namespace=node_ns,
         plugin="ldlidar::LdLidarComponent",
         name=node_name,
         parameters=[
             # YAML files
             lidar_config_path  # Parameters
         ],
+        # remappings=[("/ldlidar_node/scan", "/scan")],
         extra_arguments=[{"use_intra_process_comms": True}],
     )
 
