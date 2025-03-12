@@ -14,7 +14,6 @@
 ###########################################################################
 
 import os
-from re import L
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -76,14 +75,13 @@ def launch_setup(context):
     # LDLidar component
     ldlidar_component = ComposableNode(
         package="ldlidar_component",
-        namespace=node_ns,
+        # namespace=node_ns,
         plugin="ldlidar::LdLidarComponent",
         name=node_name,
         parameters=[
             # YAML files
             lidar_config_path  # Parameters
         ],
-        remappings=[("/ldlidar_node/scan", "/scan")],
         extra_arguments=[{"use_intra_process_comms": True}],
     )
 
