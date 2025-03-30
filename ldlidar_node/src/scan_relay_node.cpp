@@ -22,7 +22,6 @@ private:
     {
         // Republish the message to /scan
         publisher_->publish(*msg);
-        RCLCPP_INFO(this->get_logger(), "Relayed LaserScan message to /scan");
     }
 
     rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr subscription_;
