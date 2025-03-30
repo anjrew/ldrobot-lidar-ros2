@@ -51,6 +51,21 @@ endif()
 # Dependencies
 
 find_package(ament_cmake REQUIRED)
+# --- Added for relay node dependencies ---
+find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
+
+# Add the executable
+add_executable(scan_relay_node src/scan_relay_node.cpp)
+
+# Link dependencies
+ament_target_dependencies(scan_relay_node rclcpp sensor_msgs)
+
+# Install the executable
+install(TARGETS
+  scan_relay_node
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 ###############################################################################
 # Install
